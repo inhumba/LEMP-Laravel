@@ -7,3 +7,10 @@ services:
     restart: always
     ports:
       - 8080:80
+
+  # php
+  php:
+    image: php:7.4.6-fpm
+    restart: always
+    volumes:
+      - ./www/:/var/www/
