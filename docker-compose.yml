@@ -3,14 +3,22 @@ services:
 
   # nginx
   nginx:
+    container_name: nginx
     image: nginx:latest
     restart: always
+    volumes:
+      - ./nginx/conf/nginx.conf:/etc/nginx/conf/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./html:/var/www/html
     ports:
       - 8080:80
 
   # php
   php:
+    container_name: php
     image: php:7.4.6-fpm
     restart: always
     volumes:
-      - ./www/:/var/www/
+      - ./html:/var/www/html
+    expose:
+      - 9000
