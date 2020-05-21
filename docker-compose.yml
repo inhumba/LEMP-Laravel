@@ -9,7 +9,7 @@ services:
     volumes:
       - ./nginx/conf/nginx.conf:/etc/nginx/conf/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./html:/var/www/html
+      - ./html/:/var/www/html/
     ports:
       - 8080:80
 
@@ -19,6 +19,29 @@ services:
     image: php:7.4.6-fpm
     restart: always
     volumes:
-      - ./html:/var/www/html
+      - ./html/:/var/www/html/
     expose:
       - 9000
+
+  # mariadb
+  db:
+    container_name: mariadb
+    image: mariadb:latest
+    restart: always
+    volumes:
+      - ./mariadb/data/:/var/lib/data/
+    environment:
+      - MYSQL_ROOT_PASSWORD=db_password
+      - MYSQL_DATABASE=db_name
+      - MYSQL_USER=db_user
+      - MYSQL_PASSWORD=db_password
+
+  # phpmyadmin
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    ports:
+      - 8000:80
+    depends_on:
+      - db
